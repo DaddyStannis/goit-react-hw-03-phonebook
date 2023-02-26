@@ -10,6 +10,21 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    let contacts;
+    try {
+      contacts = JSON.parse(localStorage.getItem('contacts'));
+    } catch (error) {
+      console.error(error);
+    }
+    this.setState({ contacts: contacts ? contacts : [] });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log(this.state.contacts);
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+  }
+
   getFilteredContacts() {
     const { filter: substring, contacts } = this.state;
     if (!substring.length) {
