@@ -12,16 +12,15 @@ class App extends Component {
 
   componentDidMount() {
     let contacts;
-    try {
-      contacts = JSON.parse(localStorage.getItem('contacts'));
-    } catch (error) {
-      console.error(error);
+    const contactsString = localStorage.getItem('contacts');
+
+    if (contactsString) {
+      contacts = JSON.parse(contactsString);
+      this.setState({ contacts: contacts ? contacts : [] });
     }
-    this.setState({ contacts: contacts ? contacts : [] });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(this.state.contacts);
+  componentDidUpdate() {
     localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
   }
 
@@ -50,7 +49,7 @@ class App extends Component {
       number: number,
     };
 
-    this.setState((state, props) => {
+    this.setState(() => {
       return { contacts: [...contacts, newContact] };
     });
   };
